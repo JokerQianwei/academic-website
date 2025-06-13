@@ -1,0 +1,123 @@
+{{ define "main" }}
+<article class="single-page">
+    <div class="page-header">
+        <div class="container">
+            <h1 class="page-title">{{ .Title }}</h1>
+            
+            {{ if eq .Section "members" }}
+            <!-- 成员页面头部 -->
+            <div class="member-header">
+                {{ if .Params.avatar }}
+                <div class="member-avatar-large">
+                    <img src="{{ .Params.avatar }}" alt="{{ .Title }}" loading="lazy">
+                </div>
+                {{ end }}
+                <div class="member-meta">
+                    <p class="member-role">{{ .Params.role }}</p>
+                    {{ if .Params.email }}
+                    <p class="member-contact">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:{{ .Params.email }}">{{ .Params.email }}</a>
+                    </p>
+                    {{ end }}
+                    {{ if .Params.website }}
+                    <p class="member-contact">
+                        <i class="fas fa-globe"></i>
+                        <a href="{{ .Params.website }}" target="_blank">个人主页</a>
+                    </p>
+                    {{ end }}
+                    {{ if .Params.interests }}
+                    <div class="member-interests">
+                        <strong>研究方向：</strong>
+                        {{ range .Params.interests }}
+                        <span class="interest-tag">{{ . }}</span>
+                        {{ end }}
+                    </div>
+                    {{ end }}
+                </div>
+            </div>
+            
+            {{ else if eq .Section "publications" }}
+            <!-- 论文页面头部 -->
+            <div class="publication-header">
+                <div class="publication-meta">
+                    <p class="publication-authors">
+                        <strong>作者：</strong>{{ delimit .Params.authors ", " }}
+                    </p>
+                    <p class="publication-venue">
+                        <strong>发表于：</strong>{{ .Params.publication }}
+                        {{ if .Params.year }}({{ .Params.year }}){{ end }}
+                    </p>
+                    {{ if .Params.keywords }}
+                    <div class="publication-keywords">
+                        <strong>关键词：</strong>
+                        {{ range .Params.keywords }}
+                        <span class="keyword-tag">{{ . }}</span>
+                        {{ end }}
+                    </div>
+                    {{ end }}
+                </div>
+                
+                {{ if .Params.links }}
+                <div class="publication-links">
+                    {{ with .Params.links.pdf }}
+                    <a href="{{ . }}" class="btn btn-primary" target="_blank">
+                        <i class="fas fa-file-pdf"></i> 下载PDF
+                    </a>
+                    {{ end }}
+                    {{ with .Params.links.code }}
+                    <a href="{{ . }}" class="btn btn-secondary" target="_blank">
+                        <i class="fab fa-github"></i> 查看代码
+                    </a>
+                    {{ end }}
+                    {{ with .Params.links.demo }}
+                    <a href="{{ . }}" class="btn btn-secondary" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> 在线演示
+                    </a>
+                    {{ end }}
+                    {{ with .Params.links.slides }}
+                    <a href="{{ . }}" class="btn btn-secondary" target="_blank">
+                        <i class="fas fa-presentation"></i> 幻灯片
+                    </a>
+                    {{ end }}
+                    {{ with .Params.links.video }}
+                    <a href="{{ . }}" class="btn btn-secondary" target="_blank">
+                        <i class="fas fa-video"></i> 视频
+                    </a>
+                    {{ end }}
+                </div>
+                {{ end }}
+                
+                {{ if .Params.abstract }}
+                <div class="publication-abstract">
+                    <h3>摘要</h3>
+                    <p>{{ .Params.abstract }}</p>
+                </div>
+                {{ end }}
+            </div>
+            {{ end }}
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="container">
+            <div class="content">
+                {{ .Content }}
+            </div>
+            
+            <!-- 返回按钮 -->
+            <div class="page-navigation">
+                {{ if eq .Section "members" }}
+                <a href="/members/" class="btn btn-outline">
+                    <i class="fas fa-arrow-left"></i> 返回团队成员
+                </a>
+                {{ else if eq .Section "publications" }}
+                <a href="/publications/" class="btn btn-outline">
+                    <i class="fas fa-arrow-left"></i> 返回科研成果
+                </a>
+                {{ end }}
+            </div>
+        </div>
+    </div>
+</article>
+{{ end }}

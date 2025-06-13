@@ -1,0 +1,126 @@
+{{ define "main" }}
+<div class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">{{ .Title }}</h1>
+            <div class="hero-description">
+                {{ .Content }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 最新动态 -->
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">最新动态</h2>
+        <div class="news-grid">
+            {{ range first 3 (where .Site.RegularPages "Section" "publications") }}
+            <div class="news-item">
+                <div class="news-date">{{ .Date.Format "2006-01-02" }}</div>
+                <h3 class="news-title">
+                    <a href="{{ .Permalink }}">{{ .Title }}</a>
+                </h3>
+                <p class="news-summary">{{ .Params.abstract | truncate 100 }}</p>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+</section>
+
+<!-- 研究方向 -->
+<section class="section section-alt">
+    <div class="container">
+        <h2 class="section-title">主要研究方向</h2>
+        <div class="research-grid">
+            <div class="research-item">
+                <div class="research-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3>深度学习</h3>
+                <p>神经网络架构设计、优化算法、理论分析</p>
+            </div>
+            <div class="research-item">
+                <div class="research-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <h3>计算机视觉</h3>
+                <p>图像识别、目标检测、医学图像分析</p>
+            </div>
+            <div class="research-item">
+                <div class="research-icon">
+                    <i class="fas fa-language"></i>
+                </div>
+                <h3>自然语言处理</h3>
+                <p>大语言模型、多模态理解、对话系统</p>
+            </div>
+            <div class="research-item">
+                <div class="research-icon">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <h3>机器学习理论</h3>
+                <p>优化理论、泛化分析、联邦学习</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 团队概览 -->
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">团队成员</h2>
+        <div class="members-preview">
+            {{ range first 4 (where .Site.RegularPages "Section" "members") }}
+            <div class="member-card">
+                {{ if .Params.avatar }}
+                <div class="member-avatar">
+                    <img src="{{ .Params.avatar }}" alt="{{ .Title }}" loading="lazy">
+                </div>
+                {{ end }}
+                <div class="member-info">
+                    <h3 class="member-name">
+                        <a href="{{ .Permalink }}">{{ .Title }}</a>
+                    </h3>
+                    <p class="member-role">{{ .Params.role }}</p>
+                    <div class="member-interests">
+                        {{ range first 2 .Params.interests }}
+                        <span class="interest-tag">{{ . }}</span>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
+            {{ end }}
+        </div>
+        <div class="text-center">
+            <a href="/members/" class="btn btn-primary">查看所有成员</a>
+        </div>
+    </div>
+</section>
+
+<!-- 重点论文 -->
+<section class="section section-alt">
+    <div class="container">
+        <h2 class="section-title">重点论文</h2>
+        <div class="publications-preview">
+            {{ range first 3 (where (where .Site.RegularPages "Section" "publications") ".Params.featured" true) }}
+            <div class="publication-card">
+                <div class="publication-year">{{ .Params.year }}</div>
+                <div class="publication-content">
+                    <h3 class="publication-title">
+                        <a href="{{ .Permalink }}">{{ .Title }}</a>
+                    </h3>
+                    <p class="publication-authors">
+                        {{ delimit .Params.authors ", " }}
+                    </p>
+                    <p class="publication-venue">{{ .Params.publication }}</p>
+                    <p class="publication-abstract">{{ .Params.abstract | truncate 150 }}</p>
+                </div>
+            </div>
+            {{ end }}
+        </div>
+        <div class="text-center">
+            <a href="/publications/" class="btn btn-primary">查看所有论文</a>
+        </div>
+    </div>
+</section>
+{{ end }}

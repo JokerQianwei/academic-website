@@ -1,0 +1,101 @@
+baseURL: 'https://your-username.github.io/academic-website'
+languageCode: 'zh-cn'
+title: '学术课题组'
+theme: 'academic'
+
+# 网站基本信息
+params:
+  author: '课题组名称'
+  description: '专注于人工智能与机器学习研究的学术团队'
+  keywords: ['人工智能', '机器学习', '深度学习', '计算机视觉', '自然语言处理']
+  
+  # 联系信息
+  email: 'contact@university.edu'
+  phone: '+86-xxx-xxxx-xxxx'
+  address: '某某大学某某学院'
+  
+  # 社交媒体
+  social:
+    github: 'https://github.com/your-org'
+    twitter: 'https://twitter.com/your-handle'
+    linkedin: 'https://linkedin.com/company/your-org'
+  
+  # 网站功能配置
+  features:
+    search: true
+    darkMode: true
+    comments: false
+  
+  # SEO 配置
+  seo:
+    images: ['/images/og-image.jpg']
+    twitter_card: 'summary_large_image'
+
+# 菜单配置
+menu:
+  main:
+    - name: '首页'
+      url: '/'
+      weight: 10
+    - name: '团队成员'
+      url: '/members/'
+      weight: 20
+    - name: '科研成果'
+      url: '/publications/'
+      weight: 30
+    - name: '研究方向'
+      url: '/research/'
+      weight: 40
+    - name: '联系我们'
+      url: '/contact/'
+      weight: 50
+
+# 分类配置
+taxonomies:
+  category: 'categories'
+  tag: 'tags'
+  year: 'years'
+  author: 'authors'
+
+# 输出格式
+outputs:
+  home: ['HTML', 'RSS', 'JSON']
+  page: ['HTML']
+  section: ['HTML', 'RSS']
+
+# Markdown 配置
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    style: 'github'
+    lineNos: true
+    codeFences: true
+
+# 图片处理
+imaging:
+  resampleFilter: 'lanczos'
+  quality: 85
+  anchor: 'smart'
+
+# 安全配置
+security:
+  enableInlineShortcodes: false
+  funcs:
+    getenv: ['^HUGO_', '^CI$']
+
+# 构建配置
+build:
+  writeStats: true
+  
+# 开发服务器配置
+server:
+  headers:
+    - for: '/**'
+      values:
+        X-Frame-Options: 'DENY'
+        X-XSS-Protection: '1; mode=block'
+        X-Content-Type-Options: 'nosniff'
+        Referrer-Policy: 'strict-origin-when-cross-origin'
+        Content-Security-Policy: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;"

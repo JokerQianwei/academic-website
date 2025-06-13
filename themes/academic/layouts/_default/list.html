@@ -1,0 +1,119 @@
+{{ define "main" }}
+<div class="page-header">
+    <div class="container">
+        <h1 class="page-title">{{ .Title }}</h1>
+        {{ if .Content }}
+        <div class="page-description">
+            {{ .Content }}
+        </div>
+        {{ end }}
+    </div>
+</div>
+
+<div class="page-content">
+    <div class="container">
+        {{ if eq .Section "members" }}
+        <!-- 成员列表 -->
+        <div class="members-grid">
+            {{ range .Pages.ByWeight }}
+            <div class="member-card">
+                {{ if .Params.avatar }}
+                <div class="member-avatar">
+                    <img src="{{ .Params.avatar }}" alt="{{ .Title }}" loading="lazy">
+                </div>
+                {{ end }}
+                <div class="member-info">
+                    <h3 class="member-name">
+                        <a href="{{ .Permalink }}">{{ .Title }}</a>
+                    </h3>
+                    <p class="member-role">{{ .Params.role }}</p>
+                    {{ if .Params.email }}
+                    <p class="member-email">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:{{ .Params.email }}">{{ .Params.email }}</a>
+                    </p>
+                    {{ end }}
+                    <div class="member-interests">
+                        {{ range .Params.interests }}
+                        <span class="interest-tag">{{ . }}</span>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
+            {{ end }}
+        </div>
+        
+        {{ else if eq .Section "publications" }}
+        <!-- 论文列表 -->
+        <div class="publications-list">
+            {{ range .Pages.GroupByParam "year" }}
+            <div class="year-group">
+                <h2 class="year-title">{{ .Key }}年</h2>
+                <div class="publications-year">
+                    {{ range .Pages.ByWeight }}
+                    <div class="publication-item" data-year="{{ .Params.year }}">
+                        <div class="publication-content">
+                            <h3 class="publication-title">
+                                <a href="{{ .Permalink }}">{{ .Title }}</a>
+                                {{ if .Params.featured }}
+                                <span class="featured-badge">重点论文</span>
+                                {{ end }}
+                            </h3>
+                            <p class="publication-authors">
+                                {{ delimit .Params.authors ", " }}
+                            </p>
+                            <p class="publication-venue">
+                                <strong>{{ .Params.publication }}</strong>
+                                {{ if .Params.year }}({{ .Params.year }}){{ end }}
+                            </p>
+                            {{ if .Params.abstract }}
+                            <p class="publication-abstract">{{ .Params.abstract | truncate 200 }}</p>
+                            {{ end }}
+                            <div class="publication-links">
+                                {{ with .Params.links.pdf }}
+                                <a href="{{ . }}" class="pub-link" target="_blank">
+                                    <i class="fas fa-file-pdf"></i> PDF
+                                </a>
+                                {{ end }}
+                                {{ with .Params.links.code }}
+                                <a href="{{ . }}" class="pub-link" target="_blank">
+                                    <i class="fab fa-github"></i> 代码
+                                </a>
+                                {{ end }}
+                                {{ with .Params.links.demo }}
+                                <a href="{{ . }}" class="pub-link" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> 演示
+                                </a>
+                                {{ end }}
+                            </div>
+                        </div>
+                    </div>
+                    {{ end }}
+                </div>
+            </div>
+            {{ end }}
+        </div>
+        
+        {{ else }}
+        <!-- 默认列表 -->
+        <div class="posts-list">
+            {{ range .Pages }}
+            <article class="post-item">
+                <h2 class="post-title">
+                    <a href="{{ .Permalink }}">{{ .Title }}</a>
+                </h2>
+                <div class="post-meta">
+                    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006年1月2日" }}</time>
+                </div>
+                {{ if .Summary }}
+                <div class="post-summary">
+                    {{ .Summary }}
+                </div>
+                {{ end }}
+            </article>
+            {{ end }}
+        </div>
+        {{ end }}
+    </div>
+</div>
+{{ end }}
