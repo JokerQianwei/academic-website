@@ -74,9 +74,6 @@ choco install hugo-extended
 sudo apt-get install hugo
 ```
 
-**或者直接下载二进制文件:**
-访问 [Hugo Releases](https://github.com/gohugoio/hugo/releases) 下载适合您系统的版本。
-
 ### 2. 克隆项目
 
 ```bash
@@ -286,13 +283,4 @@ https://your-username.github.io/academic-website
 
 欢迎提交 Issue 和 Pull Request 来改进这个项目！
 
-## 📞 联系我们
 
-如有任何问题或建议，请联系：
-
-- **邮箱**: contact@university.edu
-- **GitHub**: [项目地址](https://github.com/your-username/academic-website)
-
----
-
-*最后更新: 2024年3月*
