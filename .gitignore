@@ -39,6 +39,7 @@ node_modules/
 .Trashes
 ehthumbs.db
 Thumbs.db
+.cursor
 
 # Hugo 缓存
 .hugo_build.lock
