@@ -69,23 +69,33 @@
                             {{ if .Params.abstract }}
                             <p class="publication-abstract">{{ .Params.abstract | truncate 200 }}</p>
                             {{ end }}
+                            {{ if .Params.links }}
                             <div class="publication-links">
-                                {{ with .Params.links.pdf }}
-                                <a href="{{ . }}" class="pub-link" target="_blank">
-                                    <i class="fas fa-file-pdf"></i> PDF
-                                </a>
-                                {{ end }}
-                                {{ with .Params.links.code }}
-                                <a href="{{ . }}" class="pub-link" target="_blank">
-                                    <i class="fab fa-github"></i> 代码
-                                </a>
-                                {{ end }}
-                                {{ with .Params.links.demo }}
-                                <a href="{{ . }}" class="pub-link" target="_blank">
-                                    <i class="fas fa-external-link-alt"></i> 演示
-                                </a>
+                                {{ if reflect.IsSlice .Params.links }}
+                                    {{ range .Params.links }}
+                                    <a href="{{ .url }}" class="pub-link" target="_blank">
+                                        <i class="fas fa-{{ .icon }}"></i> {{ .name }}
+                                    </a>
+                                    {{ end }}
+                                {{ else }}
+                                    {{ with .Params.links.pdf }}
+                                    <a href="{{ . }}" class="pub-link" target="_blank">
+                                        <i class="fas fa-file-pdf"></i> PDF
+                                    </a>
+                                    {{ end }}
+                                    {{ with .Params.links.code }}
+                                    <a href="{{ . }}" class="pub-link" target="_blank">
+                                        <i class="fab fa-github"></i> 代码
+                                    </a>
+                                    {{ end }}
+                                    {{ with .Params.links.slides }}
+                                    <a href="{{ . }}" class="pub-link" target="_blank">
+                                        <i class="fas fa-presentation"></i> 幻灯片
+                                    </a>
+                                    {{ end }}
                                 {{ end }}
                             </div>
+                            {{ end }}
                         </div>
                     </div>
                     {{ end }}

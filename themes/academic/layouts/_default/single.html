@@ -60,30 +60,34 @@
                 
                 {{ if .Params.links }}
                 <div class="publication-links">
-                    {{ with .Params.links.pdf }}
-                    <a href="{{ . }}" class="btn btn-primary" target="_blank">
-                        <i class="fas fa-file-pdf"></i> 下载PDF
-                    </a>
-                    {{ end }}
-                    {{ with .Params.links.code }}
-                    <a href="{{ . }}" class="btn btn-secondary" target="_blank">
-                        <i class="fab fa-github"></i> 查看代码
-                    </a>
-                    {{ end }}
-                    {{ with .Params.links.demo }}
-                    <a href="{{ . }}" class="btn btn-secondary" target="_blank">
-                        <i class="fas fa-external-link-alt"></i> 在线演示
-                    </a>
-                    {{ end }}
-                    {{ with .Params.links.slides }}
-                    <a href="{{ . }}" class="btn btn-secondary" target="_blank">
-                        <i class="fas fa-presentation"></i> 幻灯片
-                    </a>
-                    {{ end }}
-                    {{ with .Params.links.video }}
-                    <a href="{{ . }}" class="btn btn-secondary" target="_blank">
-                        <i class="fas fa-video"></i> 视频
-                    </a>
+                    {{ if reflect.IsSlice .Params.links }}
+                        {{ range .Params.links }}
+                        <a href="{{ .url }}" class="pub-link" target="_blank">
+                            <i class="fas fa-{{ .icon }}"></i>
+                            {{ .name }}
+                        </a>
+                        {{ end }}
+                    {{ else }}
+                        {{ with .Params.links.pdf }}
+                        <a href="{{ . }}" class="pub-link" target="_blank">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </a>
+                        {{ end }}
+                        {{ with .Params.links.code }}
+                        <a href="{{ . }}" class="pub-link" target="_blank">
+                            <i class="fab fa-github"></i> 代码
+                        </a>
+                        {{ end }}
+                        {{ with .Params.links.slides }}
+                        <a href="{{ . }}" class="pub-link" target="_blank">
+                            <i class="fas fa-presentation"></i> 幻灯片
+                        </a>
+                        {{ end }}
+                        {{ with .Params.links.demo }}
+                        <a href="{{ . }}" class="pub-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> 演示
+                        </a>
+                        {{ end }}
                     {{ end }}
                 </div>
                 {{ end }}

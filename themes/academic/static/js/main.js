@@ -3,18 +3,21 @@
 document.addEventListener('DOMContentLoaded', function() {
     // 移动端导航菜单切换
     initMobileNavigation();
-    
+
     // 平滑滚动
     initSmoothScrolling();
-    
+
     // 图片懒加载
     initLazyLoading();
-    
+
     // 返回顶部按钮
     initBackToTop();
-    
+
     // 搜索功能
     initSearch();
+
+    // Apple 风格增强功能
+    initAppleEnhancements();
 });
 
 // 移动端导航菜单
@@ -391,6 +394,186 @@ const utils = {
         return offsetTop;
     }
 };
+
+// Apple 风格增强功能
+function initAppleEnhancements() {
+    // 滚动时导航栏效果
+    initScrollNavbar();
+
+    // 页面元素动画
+    initScrollAnimations();
+
+    // 卡片悬停效果增强
+    initCardHoverEffects();
+
+    // 按钮点击涟漪效果
+    initRippleEffect();
+
+    // 视差滚动效果
+    initParallaxEffect();
+}
+
+// 滚动时导航栏效果
+function initScrollNavbar() {
+    let lastScrollTop = 0;
+    const header = document.querySelector('.header');
+
+    if (!header) return;
+
+    window.addEventListener('scroll', utils.throttle(function() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > lastScrollTop && scrollTop > 100) {
+            // 向下滚动，隐藏导航栏
+            header.style.transform = 'translateY(-100%)';
+        } else {
+            // 向上滚动，显示导航栏
+            header.style.transform = 'translateY(0)';
+        }
+
+        // 添加滚动时的背景模糊效果
+        if (scrollTop > 50) {
+            header.style.background = 'rgba(255, 255, 255, 0.95)';
+            header.style.backdropFilter = 'saturate(180%) blur(20px)';
+        } else {
+            header.style.background = 'rgba(255, 255, 255, 0.8)';
+            header.style.backdropFilter = 'saturate(180%) blur(20px)';
+        }
+
+        lastScrollTop = scrollTop;
+    }, 16));
+}
+
+// 页面元素滚动动画
+function initScrollAnimations() {
+    const animatedElements = document.querySelectorAll('.animate-fade-in-up, .animate-fade-in, .animate-scale-in');
+
+    if (animatedElements.length === 0) return;
+
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0) scale(1)';
+                entry.target.classList.add('animated');
+            }
+        });
+    }, observerOptions);
+
+    animatedElements.forEach(el => {
+        el.style.opacity = '0';
+        if (el.classList.contains('animate-fade-in-up')) {
+            el.style.transform = 'translateY(30px)';
+        } else if (el.classList.contains('animate-scale-in')) {
+            el.style.transform = 'scale(0.9)';
+        }
+        observer.observe(el);
+    });
+}
+
+// 卡片悬停效果增强
+function initCardHoverEffects() {
+    const cards = document.querySelectorAll('.card, .member-card, .research-item, .news-item, .publication-item');
+
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-6px)';
+            this.style.transition = 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        });
+
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+
+        // 添加鼠标移动视差效果
+        card.addEventListener('mousemove', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+
+            this.style.transform = `translateY(-6px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) rotateX(0) rotateY(0)';
+        });
+    });
+}
+
+// 按钮点击涟漪效果
+function initRippleEffect() {
+    // 添加涟漪效果样式
+    const style = document.createElement('style');
+    style.textContent = `
+        .btn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.classList.add('ripple');
+
+            this.appendChild(ripple);
+
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
+}
+
+// 视差滚动效果
+function initParallaxEffect() {
+    const parallaxElements = document.querySelectorAll('.hero');
+
+    if (parallaxElements.length === 0) return;
+
+    window.addEventListener('scroll', utils.throttle(function() {
+        const scrolled = window.pageYOffset;
+
+        parallaxElements.forEach(element => {
+            const rate = scrolled * -0.5;
+            element.style.transform = `translateY(${rate}px)`;
+        });
+    }, 16));
+}
 
 // 页面加载完成后初始化论文筛选
 window.addEventListener('load', function() {
