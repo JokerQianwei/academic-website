@@ -1,5 +1,5 @@
 ---
-title: "欢迎来到我们的学术课题组"
+title: "欢迎来到深圳大学吉君恺课题组"
 date: 2024-01-01
 draft: false
 type: "homepage"
